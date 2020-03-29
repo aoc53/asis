@@ -1,5 +1,5 @@
 #!/bin/bash
-#Alfonso del Rincon de la Villa 783252
+#Alonso del Rincon de la Villa 783252
 #Angel Oliveros Cartagena 698691
 
 #$* todos los parametros
