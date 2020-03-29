@@ -3,11 +3,10 @@
 #Angel Oliveros Cartagena 698691
 
 
-echo "Introduzca una letra: ";
+echo "Introduzca una tecla: ";
 
 read input;
 letter="${input:0:1}";
-echo $letter
 
 case "$letter" in
 	[0-9])
