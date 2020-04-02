@@ -39,9 +39,11 @@ echo "Directorio destino de copia: $directory";
 
 count=0
 for file in $(ls -p | grep -v /); do
-	cp -f "$file" "$directory";
-	echo "./$file ha sido copiado a $directory"
-	count=$(($count +1))
+	if [ ! -d "$file" ]; then
+		cp -f "$file" "$directory";
+		echo "./$file ha sido copiado a $directory"
+		count=$(($count +1))
+	fi;
 done;
 if [ $count -gt 0 ]; then
 	echo "Se han copiado $count archivos";
