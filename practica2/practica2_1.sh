@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 #Autores:
 #   -Alonso del Rincón de la Villa (783252)
@@ -8,6 +8,7 @@ r="r"           #
 w="w"           #se guardan los distintos caracteres a concatenar con el mensaje
 x="x"           #que se imprimirá en variables para hacer posible la concatenación
 SinPermiso="-"  #
+echo "Introduzca el nombre del fichero: "
 read fichero        #se lee de la entrada estandar el nombre del fichero a comprobar sus permisos 
                     #y se guarda en una variable
 
