@@ -68,7 +68,7 @@ if [ ! -r "$2" ]; then
 	exit 3;
 fi;
 
-for row in $(cat "$2");
+cat "$2" | while read row;
 do
 	$function "$row";
 done;
