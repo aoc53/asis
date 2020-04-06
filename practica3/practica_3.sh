@@ -24,8 +24,8 @@ function delete_user (){
 		home_dir=$(echo $info | cut -d: -f6 &2> /dev/null);
 		passwd -l "$user"
 		pkill -9 -u "$user";
-		tar -zcf backup_"$user".tar "$home_dir" &> /dev/null;
-                mv -f backup_"$user".tar "$backup_dir";
+		tar -zcf "$user".tar "$home_dir" &> /dev/null;
+                mv -f "$user".tar "$backup_dir";
                 userdel -r "$user" &> /dev/null;
                 echo "usuario $name eliminado";
 	fi;
