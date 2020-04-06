@@ -48,7 +48,7 @@ function add_user(){
 	grep ^"$user": /etc/passwd > /dev/null; 
 	if [ $? -ne 0 ]
 	then
-		useradd -c "$name_user" -f 30 -K UID_MIN=1815 -u -U -m -k /etc/skel "$user"
+		useradd "$user" -c "$name_user" -f 30 -K UID_MIN=1815 -u -U -k /etc/skel -m 
 		echo "$user:$password" | chpasswd
 		echo "\"$name_user\" ha sido creado"
 	else
