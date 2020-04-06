@@ -13,11 +13,10 @@ if [ $# -ne 2 ]; then
 	echo "Numero incorrecto de parametros"
 	exit 2;
 fi;
-
+if [ ! -d "$backup_dir" ]; then
+	mkdir -p "$backup_dir";
+fi;
 function delete_user (){
-	if [ ! -d "$backup_dir" ]; then
-		mkdir -p "$backup_dir";
-	fi;
 	user=$(echo $1 | cut -d, -f1);
 	#Get info about user to delete from /etc/passwd
 	info=$(cat /etc/passwd | grep -e "^$user:");
