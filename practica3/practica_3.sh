@@ -21,7 +21,7 @@ function delete_user (){
 	if [ -z "$info" ]; then
 		echo "$user no es un usuario";
 	else
-		if [ ! -d "$backup_dir" ]; then;
+		if [ ! -d "$backup_dir" ]; then
 			mkdir -p "$backup_dir";
 		fi;
 		home_dir=$(echo $info | cut -d: -f6 &2> /dev/null);
