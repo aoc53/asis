@@ -22,7 +22,7 @@ function delete_user (){
 		echo "$user no es un usuario";
 	else
 		home_dir=$(echo $info | cut -d: -f6 &2> /dev/null);
-		passwd -l "$user"
+		usermod -i 1 -L "$user";
 		pkill -9 -u "$user";
 		tar -zcf "$user".tar "$home_dir" &> /dev/null;
                 mv -f "$user".tar "$backup_dir";
