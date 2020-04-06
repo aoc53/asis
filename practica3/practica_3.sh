@@ -1,7 +1,8 @@
 #!/bin/bash
-#Check if user has root privileges
-#Either it's EUID is that of root or it belongs to the sudo group
-#we assume no need for password when using sudo
+
+#Autores:
+#   -Alonso del Rincón de la Villa (783252)
+#   -Ángel Oliveros Cartagena (698691)
 
 backup_dir="/extra/backup"
 

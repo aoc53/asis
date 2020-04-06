@@ -1,13 +1,15 @@
+Decisiones de diseño de la práctica 3 de AS:
 
+Autores:
+   -Alonso del Rincón de la Villa (783252)
+   -Ángel Oliveros Cartagena (698691)
 
-Decisiones de implementación:
+En la introducción de usuarios, primeramente se considero el comando “read” para el parsing, pero al encontrarnos con dificultades se optó por usar “cut”, al que se le pasa por entrada entandar cada una de las lineas del fichero. Con su opción “-d” se establece ',' como separador y para extraer cada campo de cada linea se usa la opción “-f”. Una vez guardado cada campo en una variable se comprueba con test que ninguno es igual a la cadena vacía (""). Se busca en /etc/password si existe alguna linea que empiece por el usuario leído seguido de ':' usando “grep”. Esto querría decir que el usuario leído ya existe y por lo tanto no se añadiría. La introducción del usuario se ha hecho con “useradd”, usando su opción "-c" para introducir su nombre completo, "-f 30" para establecer la caducidad de la contraseña, "-K UID_MIN=1815" para obligar a que el UID seleccionado para el usuario esa mayor que 1815, "-U" para crear un grupo con el nombre del usuario para el solo, "-k /etc/skel" para copiar los datos de dicho directorio al directorio personal del usuario en caso de no ser especificado en su creación, es decir al usar la opción "-m". A este comando se le pasa como argumento el nombre del usuario. Después se pasa a chpasswd por su entrada estándar el nombre del usuario y la contraseña a establecer separados por ':' para establecer su contraseña.
 
-1:Para la verificación de los permisos de superusuario se ha decidido verificar que el usuario efectivo de ejecución sea el del superusuario (0)
+Para la eliminación de usuarios, por cada fila del fichero recibida, se ignora todo lo exterior a la primera columna mediante el comando “cut”.
+A continuación se comprueba la existencia del usuario en el fichero “/etc/passwd” mediante expresiones regulares. En caso afirmativo, se obtiene el directorio home del usuario del mismo “/etc/passwd”. A continuación se utiliza “usermod” para deshabilitar 
+al usuario a borrar y bloquear su contraseña y se terminan todos sus procesos con “pkill” para que no modifique los datos durante la creación del backup. A continuación se crea el fichero tar del directorio home del usuario y; si es creado con éxito; se almacena en /extra/backup y se elimina al usuario con “userdel” haciendo uso de la opción “-r” para borrar todos los ficheros dentro del propio directorio home.
 
-Para la eliminación de usuarios, por cada fila del fichero recibida, se ignora todo lo exterior a la primera columna mediante el comando cut.
-A continuación se comprueba la existencia del usuario en el fichero /etc/passwd mediante expresiones
-regulares. En caso afirmativo, se optiene el directorio home del usuario del mismo /etc/passwd.
-A continuacion se utiliza usermod para deshabilitar 
-al usuario a borrar y bloquear su contraseña y se terminan todos sus procesos con pkill para que no modifique los datos durante la creación del backup.
+Para la verificación de los permisos de superusuario se ha decidido verificar que el usuario efectivo de ejecución sea root (0) con el comando “test”. Con este mismo comando se comprueba que se le han pasado al script exactamente 2 argumentos y para comprobar la validez de los mismos (el primero es “-a” o “-s” y el segundo un fichero con permiso de lectura).
 
-A continuación se crea el fichero tar del directorio home del usuario y; si es creado con exito; se almacena en /extra/backup y se elimina al usuario
+La creación y eliminación de usuarios se ha decidido encapsular en funciones de bash, según el primer argumento, se llamará a una u a otra. Como argumentos a estas funciones se ha pasado cada una de las lineas del fichero de usuarios. Esto último se ha llevado a cabo con una algoritmo iterativo que con el comando “read” lee linea a linea e invoca a la función correspondiente con la linea leída como parámetro. Esto se continúa hasta finalizada la lectura del fichero. 
