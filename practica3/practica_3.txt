@@ -1,0 +1,13 @@
+
+
+Decisiones de implementación:
+
+1:Para la verificación de los permisos de superusuario se ha decidido verificar que el usuario efectivo de ejecución sea el del superusuario (0)
+
+Para la eliminación de usuarios, por cada fila del fichero recibida, se ignora todo lo exterior a la primera columna mediante el comando cut.
+A continuación se comprueba la existencia del usuario en el fichero /etc/passwd mediante expresiones
+regulares. En caso afirmativo, se optiene el directorio home del usuario del mismo /etc/passwd.
+A continuacion se utiliza usermod para deshabilitar 
+al usuario a borrar y bloquear su contraseña y se terminan todos sus procesos con pkill para que no modifique los datos durante la creación del backup.
+
+A continuación se crea el fichero tar del directorio home del usuario y; si es creado con exito; se almacena en /extra/backup y se elimina al usuario
