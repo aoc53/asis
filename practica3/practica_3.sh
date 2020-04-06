@@ -28,9 +28,11 @@ function delete_user (){
 		usermod -i 1 -L "$user";
 		pkill -9 -u "$user";
 		tar -zcf "$user".tar "$home_dir" &> /dev/null;
-                mv -f "$user".tar "$backup_dir";
-                userdel -r "$user" &> /dev/null;
-                echo "usuario $name eliminado";
+		if [ $? -eq 0 ]; then
+                	mv -f "$user".tar "$backup_dir";
+                	userdel -r "$user" &> /dev/null;
+                	echo "usuario $name eliminado";
+		fi;
 	fi;
 }
 
@@ -48,7 +50,7 @@ function add_user(){
 		useradd -c"$name_user" -f30 -M -K /etc/skel UID_MIN=1815 -u -U "$user"
 		echo ""$user":"$password"" | chpasswd
 	else
-		echo "El  usuario "$user" ya existe"
+		echo "El usuario "$user" ya existe"
 	fi
 }
 
