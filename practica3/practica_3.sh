@@ -45,7 +45,8 @@ function add_user(){
 		echo "Campo invalido" 1>&2
 		exit
 	fi
-	if [ $(grep ^"$user": /etc/passwd) = "" ]
+	grep ^"$user": /etc/passwd > /dev/null &2>1 
+	if [ $? -ne 0 ]
 	then
 		useradd -c "$name_user" -f 30 -K UID_MIN=1815 -u -U -m -k /etc/skel "$user"
 		echo ""$user":"$password"" | chpasswd
