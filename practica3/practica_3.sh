@@ -1,3 +1,4 @@
+#!/bin/bash
 #Check if user has root privileges
 #Either it's EUID is that of root or it belongs to the sudo group
 #we assume no need for password when using sudo
