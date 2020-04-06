@@ -50,7 +50,7 @@ function add_user(){
 	then
 		useradd "$user" -c "$name_user" -f 30 -K UID_MIN=1815 -U -k /etc/skel -m 
 		echo "$user:$password" | chpasswd
-		echo "\"$name_user\" ha sido creado"
+		echo "$name_user ha sido creado"
 	else
 		echo "El usuario "$user" ya existe"
 	fi
