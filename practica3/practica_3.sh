@@ -15,14 +15,13 @@ fi;
 
 function delete_user (){
 	user=$(echo $1 | cut -d, -f1);
-	echo "delete $user"
 	#Get info about user to delete from /etc/passwd
 	info=$(cat /etc/passwd | grep -e "^$user:");
 	if [ -z "$info" ]; then
 		echo "$user no es un usuario";
 	else
 		home_dir=$(echo $info | cut -d: -f6 &2> /dev/null);
-		echo "$user existe";
+		passwd -l "$user"
 		pkill -9 -u "$user";
 		tar -zcf backup_"$user".tar "$home_dir" &> /dev/null;
                 mv -f backup_"$user".tar "$backup_dir";
@@ -58,12 +57,10 @@ else
 fi;
 
 if [ ! -r "$2" ]; then
-	echo "no se puede leer $2";
 	exit 3;
 fi;
 
 for row in $(cat "$2");
 do
-	echo "$row";
 	$function "$row";
 done;
