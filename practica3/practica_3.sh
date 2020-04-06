@@ -45,7 +45,7 @@ function add_user(){
 	fi
 	if [ $(grep ^"$user": /etc/passwd) = "" ]
 	then
-		useradd -c"$name_user" -f30 -M -K /etc/skel UID_MIN=1815 -U "$user"
+		useradd -c"$name_user" -f30 -M -K /etc/skel UID_MIN=1815 -u -U "$user"
 		echo ""$user":"$password"" | chpasswd
 	else
 		echo "El  usuario "$user" ya existe"
