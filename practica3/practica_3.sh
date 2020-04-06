@@ -61,7 +61,7 @@ if [ "$1" = "-a" ]; then
 elif [ "$1" = "-s" ]; then
 	function="delete_user";
 else
-	echo "Opcion Invalida" 1>&2;
+	echo "Opcion invalida" 1>&2;
 fi;
 
 if [ ! -r "$2" ]; then
