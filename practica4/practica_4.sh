@@ -23,17 +23,17 @@ function check_backup_dir (){
 function delete_user (){
 	user=$(echo $1 | cut -d, -f1);
 	#Get info about user to delete from /etc/passwd
-	info=$(cat /etc/passwd | grep -e "^$user:");
+	info=$(ssh -n -i "$ssh_key" "$ssh_user"@"$2" "cat /etc/passwd" | grep -e "^$user:");
 	if [ -z "$info" ]; then
 		echo "$user no es un usuario";
 	else
 		home_dir=$(echo $info | cut -d: -f6 &2> /dev/null);
-		usermod -i 1 -L "$user";
-		pkill -9 -u "$user";
-		tar -zcf "$user".tar "$home_dir" &> /dev/null;
+		ssh -n -i "$ssh_key" "$ssh_user"@"$2" "sudo usermod -i 1 -L '$user'";
+		ssh -n -i "$ssh_key" "$ssh_user"@"$2" "sudo pkill -9 -u '$user'";
+		ssh -n -i "$ssh_key" "$ssh_user"@"$2" "sudo tar -zcf '$user'.tar '$home_dir'" &> /dev/null;
 		if [ $? -eq 0 ]; then
-                	mv -f "$user".tar "$backup_dir";
-                	userdel -r "$user" &> /dev/null;
+                	ssh -n -i "$ssh_key" "$ssh_user"@"$2" "mv -f '$user'.tar '$backup_dir'";
+                	ssh -n -i "$ssh_key" "$ssh_user"@"$2" "sudo userdel -r '$user'" &> /dev/null;
                 	echo "usuario $name eliminado";
 		fi;
 	fi;
