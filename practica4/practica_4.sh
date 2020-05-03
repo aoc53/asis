@@ -7,6 +7,7 @@
 backup_dir="/extra/backup"
 ssh_key="~/.ssh/id_as_ed26619"
 ssh_user="as"
+ssh_port="22"
 
 if [ $# -ne 3 ]; then
 	echo "Numero incorrecto de parametros"
@@ -39,6 +40,7 @@ function delete_user (){
 }
 
 function add_user(){
+	echo "add_user $1"
 	user=$(echo $1 | cut -d, -f1)
 	password=$(echo $1 | cut -d, -f2)
 	name_user=$(echo $1 | cut -d, -f3)
@@ -47,11 +49,14 @@ function add_user(){
 		echo "Campo invalido" 1>&2
 		exit
 	fi
-	ssh -i "$ssh_key" "$ssh_user"@"$2" "grep '$user': /etc/passwd" > /dev/null; 
+	echo "before ssh"
+	ssh -n -i "$ssh_key" "$ssh_user"@"$2" "grep -e '^$user:' /etc/passwd" ;
+	echo "after ssh"
+	return 0;
 	if [ $? -ne 0 ]
 	then
-		ssh -i "$ssh_key" "$ssh_user"@"$2" "useradd '$user' -c '$name_user' -f 30 -K UID_MIN=1815 -U -k /etc/skel -m"
-		ssh -i "$ssh_key" "$ssh_user"@"$2" "echo '$user':'$password' | sudo chpasswd"
+		ssh -n -i "$ssh_key" "$ssh_user"@"$2" "sudo useradd '$user' -c '$name_user' -f 30 -K UID_MIN=1815 -U -k /etc/skel -m"
+		ssh -n -i "$ssh_key" "$ssh_user"@"$2" "echo '$user':'$password' | sudo chpasswd"
 		echo "$name_user ha sido creado"
 	else
 		echo "El usuario "$user" ya existe"
@@ -71,9 +76,12 @@ if [ ! -r "$2" ]; then
 fi;
 cat "$3" | while read address;
 do
-	if $(ping "$address"); then
+	#Check if address and port are available
+	if $(nc -z "$address" "$ssh_port" "$ssh_port" > /dev/null); then
+		echo "$address alcanzable"
 		cat "$2" | while read row;
 		do
+			echo "bucle $row";
 			$function "$row" "$address";
 		done;
 	else
