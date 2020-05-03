@@ -49,10 +49,7 @@ function add_user(){
 		echo "Campo invalido" 1>&2
 		exit
 	fi
-	echo "before ssh"
-	ssh -n -i "$ssh_key" "$ssh_user"@"$2" "grep -e '^$user:' /etc/passwd" ;
-	echo "after ssh"
-	return 0;
+	ssh -n -i "$ssh_key" "$ssh_user"@"$2" "grep -e '^$user:' /etc/passwd" > /dev/null;
 	if [ $? -ne 0 ]
 	then
 		ssh -n -i "$ssh_key" "$ssh_user"@"$2" "sudo useradd '$user' -c '$name_user' -f 30 -K UID_MIN=1815 -U -k /etc/skel -m"
