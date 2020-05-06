@@ -1,11 +1,9 @@
 #!/bin/bash
-
-#Autores:
-#   -Alonso del Rincón de la Villa (783252)
-#   -Ángel Oliveros Cartagena (698691)
+#783252, del Rincón de la Villa, Alonso, T, 1, B
+#698691, Oliveros Cartagena, Ángel, M, 1, B
 
 backup_dir="/extra/backup"
-ssh_key="~/.ssh/id_as_ed26619"
+ssh_key="~/.ssh/id_as_ed25519"
 ssh_user="as"
 ssh_port="22"
 
@@ -15,12 +13,13 @@ if [ $# -ne 3 ]; then
 fi;
 
 function check_backup_dir (){
-	if [ ! -d "$backup_dir" ]; then
-		mkdir -p "$backup_dir";
-	fi;
+	ssh -n -i "$ssh_key" "$ssh_user"@"$1" "if [ ! -d '$backup_dir' ]; then
+		sudo mkdir -p '$backup_dir';
+	fi;"
 }
 
 function delete_user (){
+	check_backup_dir "$2"
 	user=$(echo $1 | cut -d, -f1);
 	#Get info about user to delete from /etc/passwd
 	info=$(ssh -n -i "$ssh_key" "$ssh_user"@"$2" "cat /etc/passwd" | grep -e "^$user:");
@@ -28,19 +27,18 @@ function delete_user (){
 		echo "$user no es un usuario";
 	else
 		home_dir=$(echo $info | cut -d: -f6 &2> /dev/null);
-		ssh -n -i "$ssh_key" "$ssh_user"@"$2" "sudo usermod -i 1 -L '$user'";
+		ssh -n -i "$ssh_key" "$ssh_user"@"$2" "sudo usermod -f 0 -L '$user'";
 		ssh -n -i "$ssh_key" "$ssh_user"@"$2" "sudo pkill -9 -u '$user'";
 		ssh -n -i "$ssh_key" "$ssh_user"@"$2" "sudo tar -zcf '$user'.tar '$home_dir'" &> /dev/null;
 		if [ $? -eq 0 ]; then
-                	ssh -n -i "$ssh_key" "$ssh_user"@"$2" "mv -f '$user'.tar '$backup_dir'";
+                	ssh -n -i "$ssh_key" "$ssh_user"@"$2" "sudo mv -f '$user'.tar '$backup_dir'";
                 	ssh -n -i "$ssh_key" "$ssh_user"@"$2" "sudo userdel -r '$user'" &> /dev/null;
-                	echo "usuario $name eliminado";
+                	echo "usuario $user eliminado";
 		fi;
 	fi;
 }
 
 function add_user(){
-	echo "add_user $1"
 	user=$(echo $1 | cut -d, -f1)
 	password=$(echo $1 | cut -d, -f2)
 	name_user=$(echo $1 | cut -d, -f3)
@@ -75,13 +73,11 @@ cat "$3" | while read address;
 do
 	#Check if address and port are available
 	if $(nc -z "$address" "$ssh_port" "$ssh_port" > /dev/null); then
-		echo "$address alcanzable"
 		cat "$2" | while read row;
 		do
-			echo "bucle $row";
 			$function "$row" "$address";
 		done;
 	else
-		echo "$address no alcanzable"
+		echo "$address no es accesible"
 	fi
 done;
