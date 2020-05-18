@@ -16,7 +16,7 @@ if [ "$?" -ne 0 ]; then
 fi
 
 #check logic volume exists
-sudo lvdisplay "$LogicVolName" &>/dev/null
+sudo lvdisplay "/dev/$VolGroupName/$LogicVolName" &>/dev/null
 if [ "$?" -eq 0 ]; then #Volume exists, resize
 	echo "$LogicVolName found, extending..."
 	DM=$(cat /etc/fstab | grep "$VolGroupName" | cut -d ' ' -f2 )
