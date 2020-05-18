@@ -1,6 +1,7 @@
-#Autores:
-#   -Alonso del Rincón de la Villa (783252)
-#   -Ángel Oliveros Cartagena (698691)
+#783252, del Rincón de la Villa, Alonso, T, 1, B
+#698691, Oliveros Cartagena, Ángel, M, 1, B
+
+PARTE I
 
 Para la configuración de los nuevos discos conectados a ambas máquinas virtuales se ha seguido los siguientes pasos:
  -Crear los directorios donde se montarán las particiones. En nuestro caso /p1 y /p2
@@ -11,3 +12,18 @@ Para la configuración de los nuevos discos conectados a ambas máquinas virtual
  -Después, "mount -t ext3 /deb/sdb1 /p1" y "mount -t ext4 /deb/sdb2 /p2" para montar las particiones en sus respectivos directorios
  -Después se ha consultado la salida de "lbslk -fm" para saber los UUID de los sistemas de ficheros de las nuevas particiones. Se han añadido a /etc/fstab, indicando también que tipo de sistema de ficheros son y acontinuación indicando con la palabra auto que se monten al iniciar la máquina o al lanzar "mount -a" continuación
  -Por último se lanza "mount -a" y con "mount" se comprueba que figuran las particiones con las caraterísticas que les corresponden
+
+PARTE II
+
+PARTE III
+
+Para la creación de la nueva partición de disco se han utilizado nuevamente el comando 'parted' ocupando el 100% del disco. A continuación se ha creado un volumen físico con la partición creada mediante pvcreate. Finalmente se crea el grupo volumen "vg_p5" mediante vgcreate añadiendo el nuevo volumen físico.
+
+En el script practica5_parte3_vg.sh al pasar de parametros el grupo volumen y las particiones del apartado anterior, terminamos con un grupo volumen con 3 volúmenes, uno por partición (partición original + 2 particiones nuevas). Cabe destacar que en el script se crean los volúmenes físicos con la opción -f con lo que conviene tener copias de seguridad de las particiones a añadir al grupo volumen.
+
+Para el  script practica5_parte3_lv.sh se han comprobado los siguientes casos además de los casos esperados (extender o crear volúmenes):
+   - Indicar un grupo volumen no existente
+   - Extender un volumen en más del tamaño del grupo volúmen
+   - Reducir / extender cantidades negativas
+
+Las pruebas han sido realizadas ejecutando el script deste terminal con un usuario con permiso de sudo sin contraseña (como en las pŕacticas anteriores).
