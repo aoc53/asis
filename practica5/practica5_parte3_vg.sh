@@ -23,6 +23,7 @@ do
 	fi
 	
 	#create physical volume and add to volume group
-	sudo pvcreate "$var"
+	#will create the physical volume no mater its previous contents
+	sudo pvcreate -f "$var" 
 	sudo vgextend "$grv" "$var"
 done
