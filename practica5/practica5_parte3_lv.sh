@@ -3,13 +3,13 @@
 #698691, Oliveros Cartagena, Ángel, M, 1, B
 
 #read params: change separator to ","
-OldIFS=$IFS
-IFS=,
-read VolGroupName LogicVolName Size FileSysType MountDir
-IFS=$OldIFS
+OldIFS=$IFS;
+IFS=','
+read VolGroupName LogicVolName Size FileSysType MountDir;
+IFS=$OldIFS;
 
 #check volume group exists before continuing
-sudo vgdisplay "$VolGroupName" &>/dev/null
+sudo vgdisplay "$VolGroupName" &> /dev/null
 if [ "$?" -ne 0 ]; then
 	echo "error: volume group $VolGroupName not found"
 	exit 1
