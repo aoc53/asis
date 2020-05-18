@@ -1,0 +1,13 @@
+#Autores:
+#   -Alonso del Rincón de la Villa (783252)
+#   -Ángel Oliveros Cartagena (698691)
+
+Para la configuración de los nuevos discos conectados a ambas máquinas virtuales se ha seguido los siguientes pasos:
+ -Crear los directorios donde se montarán las particiones. En nuestro caso /p1 y /p2
+ -Se ha lanzado "parted /dev/sdb -a optimal" para crear las unidades lógicas con alineamiento óptimo. 
+ -En parted se ha llamado a mktable. Se ha indicado como gpt el tipo de tabla de particiones.
+ -En parted se ha llamado a mkpart. Su asistente ha ido preguntando las especificaciones del volumen lógico. Se les ha llamado p1 y p2, con sistema de archivos ext3 y ext4 respectivamente. Y se los ha definido en distintos tramos (del byte 1 al 50% del disco y del Mbyte 16.8 al 100%) del disco de forma que no se violara el alineamiento
+ -Se ha lanzado "mkfs.ext3 /deb/sdb1" y "mkfs.ext4 /deb/sdb2" para crear sus sistemas de ficheros
+ -Después, "mount -t ext3 /deb/sdb1 /p1" y "mount -t ext4 /deb/sdb2 /p2" para montar las particiones en sus respectivos directorios
+ -Después se ha consultado la salida de "lbslk -fm" para saber los UUID de los sistemas de ficheros de las nuevas particiones. Se han añadido a /etc/fstab, indicando también que tipo de sistema de ficheros son y acontinuación indicando con la palabra auto que se monten al iniciar la máquina o al lanzar "mount -a" continuación
+ -Por último se lanza "mount -a" y con "mount" se comprueba que figuran las particiones con las caraterísticas que les corresponden

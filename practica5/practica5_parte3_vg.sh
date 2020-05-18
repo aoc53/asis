@@ -1,11 +1,11 @@
 #!/bin/bash
+#783252, del Rincón de la Villa, Alonso, T, 1, B
+#698691, Oliveros Cartagena, Ángel, M, 1, B
 
 #volume group
 grv="$1"
 
 #second parameter becomes $1
-shift
-part="$1"
 shift
 
 #search for the partition to add to de volume
