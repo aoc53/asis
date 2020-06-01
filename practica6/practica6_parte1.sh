@@ -17,5 +17,12 @@ open_ports=$(ss -l -n --no-header | wc -l)
 
 total_processes=$(ps -o pid= | wc -l);
 
-logger -p local0.info  "UptimeInfo: $uptime_info; UsedMem: $(echo $mem_info )AvailableMem:UsedSwap:UsedSpace:AvailableSpace:Connections:OpenPorts:TotalProcesses\n \
-$uptime_info:$mem_info:$swap_info:$disk_info:$connections:$open_ports:$total_processes"
+logger -p local0.info  "UptimeInfo: $uptime_info; \
+UsedMem: $(echo $mem_info | cut -d"$delim" -f1); \
+AvailableMem: $(echo $mem_info | cut -d"$delim" -f2); \
+UsedSwap: $swap_info; \
+UsedSpace: $(echo $disk_info | cut -d"$delim" -f1); \
+AvailableSpace: $(echo $disk_info | cut -d"$delim" -f2); \
+Connections: $connections; \
+OpenPorts: $open_ports; \
+TotalProcesses: $total_processes;"
