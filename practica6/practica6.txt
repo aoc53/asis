@@ -1,0 +1,14 @@
+
+
+PARTE I
+
+Se añade al fichero /etc/rsyslog.conf de la máquina hostel la siguiente regla:
+	local0.info	/var/log/monitorizacion
+
+En las máquinas virtuales se redirige la escritura del log a la máquina host con la siguente regla
+	local0.info 	@192.168.56.1
+
+Se configura el siguiente cron job para el usuario root en las máquinas virtuales:
+	*/1 * * * * bash /{ruta-fichero}.sh
+
+
