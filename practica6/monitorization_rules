@@ -1,0 +1,3 @@
+AvailableSpace:  [0-9]+(\.[0-9]+)[GT]
+TotalProcesses: [0-9]{0,3};
+Connections: [0-9]{0,3};

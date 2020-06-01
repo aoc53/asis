@@ -1,4 +1,6 @@
 #!/bin/bash
+#783252, del Rincón de la Villa, Alonso, T, 1, B
+#698691, Oliveros Cartagena, Ángel, M, 1, B
 
 delim=':'
 uptime_info=$(uptime | sed -E s/"([0-9]+),([0-9]+),?"/\1.\2/g | cut -d',' -f2,3);

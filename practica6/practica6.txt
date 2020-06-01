@@ -1,4 +1,5 @@
-
+#783252, del Rincón de la Villa, Alonso, T, 1, B
+#698691, Oliveros Cartagena, Ángel, M, 1, B
 
 PARTE I
 
@@ -11,4 +12,10 @@ En las máquinas virtuales se redirige la escritura del log a la máquina host c
 Se configura el siguiente cron job para el usuario root en las máquinas virtuales:
 	*/1 * * * * bash /{ruta-fichero}.sh
 
+PARTE II
 
+Para el uso de logchek se han creado las siguientes reglas:
+
+	"AvailableSpace:  [0-9]+(\.[0-9]+)[GT]" para monitorizar que quede en disco menos de un GB de memoria.
+	"TotalProcesses: [0-9]{0,3};" para monitorizar que haya menos de 1000 procesos ejecutándose a la vez.
+	"Connections: [0-9]{0,3};" para monitorizar que haya menos de 1000 conexiones establecidas a la vez.
