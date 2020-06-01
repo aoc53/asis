@@ -3,14 +3,14 @@
 
 PARTE I
 
-Se añade al fichero /etc/rsyslog.conf de la máquina hostel la siguiente regla:
-	local0.info	/var/log/monitorizacion
+Se añade al fichero /etc/rsyslog.conf de una de las máquinas la siguiente regla:
+	local0.info	-/var/log/monitorizacion
 
-En las máquinas virtuales se redirige la escritura del log a la máquina host con la siguente regla
-	local0.info 	@192.168.56.1
+En la otra máquina se redirige la escritura del log a con la siguente regla
+	local0.info 	@192.168.56.3
 
 Se configura el siguiente cron job para el usuario root en las máquinas virtuales:
-	*/1 * * * * bash /{ruta-fichero}.sh
+	*/1 * * * * /{ruta-fichero}/practica6_parte1.sh
 
 PARTE II
 
@@ -19,3 +19,7 @@ Para el uso de logchek se han creado las siguientes reglas:
 	"AvailableSpace:  [0-9]+(\.[0-9]+)[GT]" para monitorizar que quede en disco menos de un GB de memoria.
 	"TotalProcesses: [0-9]{0,3};" para monitorizar que haya menos de 1000 procesos ejecutándose a la vez.
 	"Connections: [0-9]{0,3};" para monitorizar que haya menos de 1000 conexiones establecidas a la vez.
+
+Para comprobar su correcto funcionamiento se ha añadido al directorio /etc/logckeck/ignore.d.server
+ el fichero con las reglas, se ha añadido el fichero /var/log/monitorizacion al fichero
+/etc/logcheck/logcheck.logfiles  y se ejecuta el comando logckeck -s con euid logcheck.
